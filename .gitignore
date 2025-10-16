@@ -1,0 +1,16 @@
+# ------------------------------------
+# Globalne pliki do ignorowania
+# ------------------------------------
+.DS_Store
+.env
+.idea/
+*.log
+
+# ------------------------------------
+# Node.js (Client i API)
+# ------------------------------------
+
+# Ignorowanie node_modules w korzeniu, kliencie i API
+/node_modules
+client/node_modules
+api/node_modules
