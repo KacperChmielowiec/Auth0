@@ -47,7 +47,7 @@ app.get('/api/photos', (req, res) => {
 });
 
 
-app.get('/api/news', verifyToken, (req, res) => {
+app.get('/api/news', verifyToken, async (req, res) => {
   const allNews = require("./mockDB.json").news;
 
   // Pobranie parametrów zapytania
@@ -62,14 +62,14 @@ app.get('/api/news', verifyToken, (req, res) => {
 
   // Wycinamy fragment tablicy
   const paginatedNews = allNews.slice(start, end);
-
+  await new Promise(r => setTimeout(r, 2000));
+  
   // Jeśli strona poza zakresem — zwróć pustą tablicę
   if (page > totalPages) {
     return res.json({
       status: 200,
       message: "No more news",
-      data: [],
-      totalPages,
+      data: {news: [], totalPages}
     });
   }
 
@@ -77,8 +77,7 @@ app.get('/api/news', verifyToken, (req, res) => {
   res.json({
     status: 200,
     message: "News list",
-    data: paginatedNews,
-    totalPages,
+    data: {news: paginatedNews, totalPages }
   });
 });
 

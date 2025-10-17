@@ -27,7 +27,9 @@ app
       authorizationParams: {
         redirect_uri: window.location.origin,
         audience: 'node-api', // 👈 to jest IDENTIFIER z panelu API Auth0
-        scope: 'openid profile email read:posts' // 👈 opcjonalne, ale zalecane
+        scope: 'openid profile email read:posts', // 👈 opcjonalne, ale zalecane,
+        cacheLocation: "localstorage",
+        useRefreshTokens: true, // automatyczne odświeżanie
       }
     })
   )

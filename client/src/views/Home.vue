@@ -1,19 +1,19 @@
 <script setup>
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { ref, onMounted } from 'vue'
-import { getSliderPhoto } from '../api/api'
+import { ref, onMounted, watch } from 'vue'
+import { useApi } from '../api/api'
 import { Navigation, Pagination } from 'swiper/modules';
-
+import { useAuth0 } from '@auth0/auth0-vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+const { getAccessTokenSilently, isAuthenticated } = useAuth0()
 
 const images = ref([])
 const loading = ref(true)
 
 
-const newsCategoryId = 5;
 const postsPerPage = 3;
 
 const posts = ref([]);
@@ -21,21 +21,22 @@ const currentPage = ref(1);
 const totalPages = ref(0);
 const isLoading = ref(false);
 const noMore = ref(false);
+const isForbidden = ref(true)
 
 onMounted(async () => {
-
-    const response = await getSliderPhoto()
+    const response = await  useApi().getSliderPhoto()
     if(response.status < 300)
     {
        images.value = response.data
-       console.log("images",images.value)
     }
     loading.value = false
 
-    fetchNews()
-
 });
 
+watch(isAuthenticated, (val) => {
+   if(isAuthenticated.value)
+    fetchNews()
+})
   // 🔹 Funkcje pomocnicze
   const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString('pl-PL', {
@@ -54,27 +55,35 @@ onMounted(async () => {
   const fetchNews = async () => {
     if (isLoading.value) return;
     isLoading.value = true;
-
+    isForbidden.value = false
     try {
-      const response = await fetchNewsApi(postPerPage,currPage)
+      const token = await getAccessTokenSilently({audience: "node-api"})
+      const response = await useApi(token).fetchNewsApi(postsPerPage,currentPage)
+      if (!response.status > 200) {
+        if(response.status == 401)
+        {
+           isForbidden.value = true
+        }
+        throw new Error(`Błąd HTTP: ${response.status}`);
+      }
       if (currentPage.value === 1) {
         totalPages.value = parseInt(response.data.totalPages) || 0;
       }
-
-      if (!response.status < 300) {
-        throw new Error(`Błąd HTTP: ${response.status}`);
-      }
-
-      const data = response.data
-      posts.value.push(...data);
+      console.log("data", response)
+      isForbidden.value = false
+      const data = response.data;
+      posts.value.push(...data.news);
 
       if (currentPage.value >= totalPages.value) {
         noMore.value = true;
       }
+
     } catch (err) {
       console.error('Błąd:', err);
+      isForbidden.value = true
+
     } finally {
-      isLoading.value = false;
+      isLoading.value = false
     }
   };
 
@@ -129,9 +138,9 @@ const modules = [Navigation, Pagination];
         :key="post.id"
         class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-200"
       >
-        <div v-if="getFeaturedImage(post)">
+        <div v-if="post.image">
           <img
-            :src="getFeaturedImage(post)"
+            :src="post.image"
             :alt="post.title.rendered"
             class="w-full h-48 object-cover rounded-t-lg"
           />
@@ -158,7 +167,7 @@ const modules = [Navigation, Pagination];
 
     <!-- Sekcja skeletonów -->
     <div
-      v-if="isLoading"
+      v-if="isLoading && !isForbidden"
       id="loadingSection"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
     >
@@ -192,7 +201,7 @@ const modules = [Navigation, Pagination];
     <!-- Przyciski / komunikaty -->
     <div class="text-center">
       <button
-        v-if="!isLoading && !noMore"
+        v-if="!isLoading && !noMore && !isForbidden"
         @click="loadMore"
         class="btn-primary-ripple"
       >
@@ -204,10 +213,16 @@ const modules = [Navigation, Pagination];
       </div>
 
       <p
-        v-if="noMore"
+        v-if="noMore && !isForbidden"
         class="text-gray-500 mt-4"
       >
         To już wszystkie aktualności.
+      </p>
+      <p
+        v-if="isForbidden"
+        class="text-gray-500 mt-4 text-xl"
+      >
+        You have to login to get acces to this resources.
       </p>
     </div>
   </div>

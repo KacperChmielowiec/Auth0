@@ -25,7 +25,7 @@
           <div class="flex space-x-4">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
             <a href="#" aria-current="page" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Dashboard</a>
-            <a href="#" :class="{ 'pointer-events-none opacity-50': !isAuthenticated }" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-white/5 hover:text-white">Profile</a>
+            <RouterLink to="/profile" :class="{ 'pointer-events-none opacity-50': !isAuthenticated }" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-white/5 hover:text-white">Profile</RouterLink>
             <a href="#" :class="{ 'pointer-events-none opacity-50': !isAuthenticated }" class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-white/5 hover:text-white">Posts</a>
           </div>
         </div>
@@ -77,6 +77,7 @@
 
 <script lang="ts">
 import { useAuth0 } from '@auth0/auth0-vue';
+import { RouterLink } from 'vue-router';
 export default {
   name: "NavBar",
   setup() {
