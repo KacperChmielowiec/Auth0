@@ -1,9 +1,90 @@
 {
-    "posts": [
-        {
-            "name": "POST1",
-            "desc": "desc"
-        }
-    ]
-
+   "posts":[
+      {
+         "name":"POST1",
+         "desc":"desc"
+      }
+   ],
+   "news":[
+      {
+         "id":1,
+         "title":"Nowe otwarcie sezonu jesiennego",
+         "excerpt":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.",
+         "image":"https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+         "date":"2025-10-10",
+         "link":"https://example.com/post/1"
+      },
+      {
+         "id":2,
+         "title":"Konferencja technologiczna w Warszawie",
+         "excerpt":"Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh.",
+         "image":"https://images.unsplash.com/photo-1518770660439-4636190af475",
+         "date":"2025-09-22",
+         "link":"https://example.com/post/2"
+      },
+      {
+         "id":3,
+         "title":"Nowe biuro w centrum miasta",
+         "excerpt":"Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis.",
+         "image":"https://images.unsplash.com/photo-1497366216548-37526070297c",
+         "date":"2025-09-18",
+         "link":"https://example.com/post/3"
+      },
+      {
+         "id":4,
+         "title":"Wydarzenie sportowe: Bieg po zdrowie",
+         "excerpt":"Suspendisse potenti. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam.",
+         "image":"https://images.unsplash.com/photo-1599058917212-d750089bc07e",
+         "date":"2025-08-30",
+         "link":"https://example.com/post/4"
+      },
+      {
+         "id":5,
+         "title":"Nowa kolekcja produktów już dostępna",
+         "excerpt":"Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh.",
+         "image":"https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+         "date":"2025-08-12",
+         "link":"https://example.com/post/5"
+      },
+      {
+         "id":6,
+         "title":"Poradnik: jak efektywnie pracować zdalnie",
+         "excerpt":"Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.",
+         "image":"https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+         "date":"2025-07-28",
+         "link":"https://example.com/post/6"
+      },
+      {
+         "id":7,
+         "title":"Relacja z targów branżowych 2025",
+         "excerpt":"Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra.",
+         "image":"https://images.unsplash.com/photo-1551836022-4c4c79ecde51",
+         "date":"2025-07-10",
+         "link":"https://example.com/post/7"
+      },
+      {
+         "id":8,
+         "title":"Wakacyjne inspiracje podróżnicze",
+         "excerpt":"In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem.",
+         "image":"https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+         "date":"2025-06-25",
+         "link":"https://example.com/post/8"
+      },
+      {
+         "id":9,
+         "title":"Zespół powiększa się o nowych specjalistów",
+         "excerpt":"Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam.",
+         "image":"https://images.unsplash.com/photo-1522075469751-3a6694fb2f61",
+         "date":"2025-06-10",
+         "link":"https://example.com/post/9"
+      },
+      {
+         "id":10,
+         "title":"Podsumowanie pierwszego półrocza",
+         "excerpt":"Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.",
+         "image":"https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+         "date":"2025-05-20",
+         "link":"https://example.com/post/10"
+      }
+   ]
 }

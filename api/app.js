@@ -1,7 +1,10 @@
 const express = require('express');
 const jwksClient = require('jwks-rsa');
 const cors = require('cors');
+const path = require('path')
 const { createVerifyTokenMiddleware, verifyPermission} = require('./middlewares')
+
+
 const app = express();
 
 const port = process.env.PORT || 8080;
@@ -21,18 +24,62 @@ const client = jwksClient({
 
 const verifyToken = createVerifyTokenMiddleware(client)
 
-app.get('/authorized', verifyToken, (req, res) => {
+//token only 
+app.get('/api/profile', verifyToken, (req, res) => {
   res.json({status: 200, message: 'Secured Resource', data: req.user });
 });
 
-app.get('/posts', verifyToken, verifyPermission(['read:posts']), (req, res) => {
-  posts = require('./mockDB.json').posts;
+// token + role permissions
+app.get('/api/posts', verifyToken, verifyPermission(['read:posts']), (req, res) => {
+  // mocked data
+  const posts = require('./mockDB.json').posts;
   res.json({status: 200, message: 'Posts', data: posts });
 });
 
 
-app.get('/public', (req, res) => {
-  res.send('Public Resource – każdy może to zobaczyć');
+app.use('/photos', express.static(path.join(process.cwd(), 'photos')));
+
+// free access 
+app.get('/api/photos', (req, res) => {
+  // mocked data
+  const photos = require("./photos/data.json")
+  res.json({status: 200, message: 'Photos', data: photos });
+});
+
+
+app.get('/api/news', verifyToken, (req, res) => {
+  const allNews = require("./mockDB.json").news;
+
+  // Pobranie parametrów zapytania
+  const page = parseInt(req.query.page) || 1;
+  const perPage = parseInt(req.query.per_page) || 3;
+
+  // Obliczenia paginacji
+  const totalItems = allNews.length;
+  const totalPages = Math.ceil(totalItems / perPage);
+  const start = (page - 1) * perPage;
+  const end = start + perPage;
+
+  // Wycinamy fragment tablicy
+  const paginatedNews = allNews.slice(start, end);
+
+  // Jeśli strona poza zakresem — zwróć pustą tablicę
+  if (page > totalPages) {
+    return res.json({
+      status: 200,
+      message: "No more news",
+      data: [],
+      totalPages,
+    });
+  }
+
+  // Zwracamy wynik
+  res.json({
+    status: 200,
+    message: "News list",
+    data: paginatedNews,
+    totalPages,
+  });
 });
 
 

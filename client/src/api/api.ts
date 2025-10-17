@@ -9,7 +9,7 @@ type FetchResponse<T> = {
   message?: string
 }
 
-const fetchWrapper = async<T = unknown> (url : string, params : RequestInit, timeout = 8000) : FetchResponse<T> => {
+const fetchWrapper = async<T = unknown> (url : string, params : RequestInit, timeout = 8000) : Promise<FetchResponse<T>> => {
 
     const contoler = new AbortController()
     const id = setTimeout(() => contoler.abort(),timeout)
@@ -24,8 +24,7 @@ const fetchWrapper = async<T = unknown> (url : string, params : RequestInit, tim
         }
 
         const data = await response.json()
-        return { data, status: response.status }
-
+        return data
     }
     catch(error: any)
     {
@@ -39,28 +38,52 @@ const fetchWrapper = async<T = unknown> (url : string, params : RequestInit, tim
 
 const getAuthData = async (url: string, headers: object = {}, queryParams: URLSearchParams) => {
     const { getAccessTokenSilently } = useAuth0()
-    const tempToken = getAccessTokenSilently({audience: "node-api"})
+    const token = getAccessTokenSilently({audience: "node-api"})
     return await fetchWrapper(`${BASE_URL}${url}?${queryParams.toString()}`,{
         method: "GET",
-        headers: { authorization: `Bearer ${tempToken}}`, ...headers }
+        headers: { authorization: `Bearer ${token}}`, ...headers }
     })
 }
 
-export const getAuthPost = async (category: string) => {
+const getAuthPost = async (category: string) => {
     const url = "/api/posts"
     const query = new URLSearchParams({cat: category})
     return await getAuthData(url,{},query)
 }
 
 
-const getPublicData = async (url: string, headers: object = {}, queryParams: URLSearchParams = {}) => {
-    return await fetchWrapper(`${BASE_URL}${url}?${queryParams.toString()}`,{
+const getPublicData = async (url: string, headers: object = {}, queryParams: URLSearchParams | null = null) => {
+
+    let URL = `${BASE_URL}${url}`
+
+    if(queryParams)
+    {
+        URL = `${URL}?${queryParams.toString()}`
+    }
+
+    return await fetchWrapper(URL,{
         method: "GET",
-        headers: headers
+        headers: headers as HeadersInit
     })
 }
 
-export const getSliderPhoto = async () => {
+const getSliderPhoto = async () => {
     const url = "/api/photos"
     return await getPublicData(url)
 }
+
+const fetchNewsApi = async (perPage: number, page: number) => {
+    const url = "/api/news"
+    const query = new URLSearchParams({"per_page": perPage.toString(), "page": page.toString()})
+    return await getAuthData(url,{},query)
+}
+
+
+
+export {
+    getAuthPost,
+    getSliderPhoto,
+    fetchNewsApi
+}
+
+
