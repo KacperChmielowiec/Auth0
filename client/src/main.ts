@@ -20,10 +20,10 @@ app
       clientId: authConfig.clientId,
       authorizationParams: {
         redirect_uri: window.location.origin,
-        audience: 'node-api', // 👈 to jest IDENTIFIER z panelu API Auth0
-        scope: 'openid profile email', // 👈 opcjonalne, ale zalecane,
+        audience: 'node-api', // id api
+        scope: 'openid profile email address phone offline_access roles permissions',
         cacheLocation: "localstorage",
-        useRefreshTokens: true, // automatyczne odświeżanie
+        useRefreshTokens: true, // refresh token
       }
     })
   )

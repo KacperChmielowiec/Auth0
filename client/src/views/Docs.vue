@@ -74,9 +74,7 @@ onMounted(async () => {
             error.value = true 
         }
     }
-
-
-
+    
 })
 
 </script>

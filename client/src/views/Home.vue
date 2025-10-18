@@ -132,7 +132,7 @@ const loadMore = () => {
       </div>
     </div>
 
-    <!-- Sekcja skeletonów -->
+ 
     <div
       v-if="isLoading && !isForbidden"
       id="loadingSection"
@@ -165,7 +165,7 @@ const loadMore = () => {
       </div>
     </div>
 
-    <!-- Przyciski / komunikaty -->
+ 
     <div class="text-center">
       <button
         v-if="!isLoading && !noMore && !isForbidden"
