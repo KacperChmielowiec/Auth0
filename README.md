@@ -18,7 +18,7 @@ Aby móc uruchomić aplikację, upewnij się, że masz zainstalowane następują
 1.  **Sklonuj** repozytorium projektu:
 
     ```bash
-    git clone [https://github.com/KacperChmielowiec/Auth0.git](https://github.com/KacperChmielowiec/Auth0.git)
+    git clone https://github.com/KacperChmielowiec/Auth0.git
     ```
 
 ---
