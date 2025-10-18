@@ -1,134 +1,131 @@
-# Instrukcja uruchomienia aplikacji (Frontend i Backend)
+# 🚀 Instrukcja Uruchomienia Aplikacji (Frontend i Backend)
 
 ---
 
-## 1. Wymagania wstępne
+## 1. Wymagania Wstępne
 
-Upewnij się, że masz zainstalowane:
+Aby móc uruchomić aplikację, upewnij się, że masz zainstalowane następujące narzędzia:
 
-* **Node.js** (zawierający **npm**)
-* **Git**
+* ✅ **Node.js** (zawierający menedżer pakietów **npm**)
+* ✅ **Git**
 
 ---
 
-## 2. Klonowanie i instalacja
+## 2. Klonowanie i Instalacja
 
-1.  **Sklonuj** repozytorium:
+### Klonowanie Repozytorium
+
+1.  **Sklonuj** repozytorium projektu:
+
     ```bash
-    
-    git clone https://github.com/KacperChmielowiec/Auth0.git
+    git clone [https://github.com/KacperChmielowiec/Auth0.git](https://github.com/KacperChmielowiec/Auth0.git)
     ```
 
-## 3. Uruchomienie Serwera (Backend)
+---
 
-1.  **Przejdź** do katalogu serwera Auth0/api:
+## 3. Uruchomienie Serwera (Backend - Node.js)
+
+### Instalacja Zależności
+
+1.  **Przejdź** do katalogu serwera (`Auth0/api`):
+
     ```bash
-    
-    cd api
+    cd Auth0/api
     ```
 
-2.  **Zainstaluj** zależności serwera:
+2.  **Zainstaluj** wymagane zależności backendu:
+
     ```bash
     npm install
-    
-    # Należy znajdować sie w katalogu /Auth0/api
+    # Upewnij się, że jesteś w katalogu /Auth0/api
     ```
+
+### Uruchomienie Serwera
 
 3.  **Uruchom** serwer:
+
     ```bash
     node app.js
-    
-    # Należy znajdować sie w katalogu /Auth0/api
+    # Upewnij się, że jesteś w katalogu /Auth0/api
     ```
 
 ---
 
-## 4. Uruchomienie Klienta (Frontend)
+## 4. Uruchomienie Klienta (Frontend - Vue.js)
 
+### Instalacja Zależności
 
-1.  **Przejdź** do katalogu klienta:
+1.  **Przejdź** do katalogu klienta (`Auth0/client`):
+
     ```bash
-    cd client
+    cd ../client
     ```
 
-2.  **Zainstaluj** zależności klienta:
+2.  **Zainstaluj** wymagane zależności frontendu:
+
     ```bash
     npm install
-    
-    # Należy znajdować sie w katalogu /Auth0/client
+    # Upewnij się, że jesteś w katalogu /Auth0/client
     ```
 
+### Uruchomienie Aplikacji Klienckiej
+
 3.  **Uruchom** aplikację kliencką (Frontend):
+
     ```bash
     npm run serve
     ```
 
-Po wykonaniu tych kroków aplikacja kliencka powinna być dostępna w przeglądarce
-*http://localhost:80* - client ( vue.js )
-*http://localhost:8080* - api ( node.js )
+### 🌐 Dostęp do Aplikacji
 
-## 4. Dostęp do zasobów
+Po wykonaniu powyższych kroków, aplikacje będą dostępne pod adresami:
 
-1. W panelu Auth0 zostało utworzonych 2 użytkownkiów z dostępem do api oraz aplikacji:
-   *Admin* - test@admin.pl
-   *User" - test@go.pl
+| Aplikacja | Adres | Technologia |
+| :--- | :--- | :--- |
+| **Klient (Frontend)** | **http://localhost:80** | Vue.js |
+| **Serwer (Backend)** | **http://localhost:8080** | Node.js |
 
-Dane logowania ( logowanie Universal Login ) przez aplikacje ,,client''
+---
 
-test@admin.pl
-Uvxb!VwzLG2UDQ9
+## 5. Dane Dostępowe Auth0
 
-test@go.pl
-PracticeAppPass!321
+W panelu **Auth0** utworzono dwóch przykładowych użytkowników. Logowanie odbywa się przez **Universal Login**:
 
+| Rola | Email | Hasło |
+| :--- | :--- | :--- |
+| **Admin** | `test@admin.pl` | `Uvxb!VwzLG2UDQ9` |
+| **User** | `test@go.pl` | `PracticeAppPass!321` |
 
-## 5. Działanie aplikacji
+---
 
-Aplikacja ma możliwość:
+## 6. 🛠️ Działanie Aplikacji i Autoryzacja
 
-- Logowania / wylogowania
-- rejestracji użytkownika przez Auth0 okno
-- Dostęp do zasobów publicznych
-- Dostęp do zasobów prywatnych ( w tym z podziałem na role )
-- wyświetlanie profilu użytkownika
+### Funkcjonalności
 
-Autoryzacja:
+Aplikacja umożliwia: **Logowanie/Wylogowanie**, **Rejestrację** (przez Auth0), dostęp do **zasobów publicznych** i **prywatnych** (z podziałem na role) oraz wyświetlanie **profilu użytkownika**.
 
-Aplikacja node.js stosuje Autotyzacje przez token JWT gdzie zapisane są informacje o aplikacji klienta oraz użytkowniku ( role , email itd )
-Aplikacja node.js weryfikuje token przez klucz publiczny RS256 za pomocą serwera 3 ( Auth0 )
-Aplikacja klienta korzysta z biblioteki  https://github.com/auth0/auth0-vue (  '@auth0/auth0-vue' )
-- bilioteka umożliwia pobieranie danych o użytkowników
-- sprawdzanie stanu tokena w czasie rzeczywistym
-- odświeżanie i przechowywanie tokena w bezpieczny niejawny sposób ( wewnątrz hooka )
-- wymienia callback_code na token bearer w niejawny sposób  wewnatrz hooka
-Aplikacja + hook daje kontrole nad odświeżaniem stanu tokena bez sprawdzania stanu ręcznie
+### Mechanizm Autoryzacji
 
-## 6. Rodzaje zasobów
+* **Backend (Node.js)**: Stosuje autoryzację za pomocą **Tokenów JWT**, weryfikowanych asymetrycznie za pomocą **klucza publicznego RS256** pobieranego z Auth0. Token zawiera pole **`permissions`** kluczowe dla autoryzacji opartej na rolach.
+* **Frontend (Vue.js)**: Używa biblioteki [`@auth0/auth0-vue`](https://github.com/auth0/auth0-vue), która w bezpieczny sposób zarządza **cyklem życia tokena** (odświeżanie, przechowywanie, wymiana `callback_code` na `bearer token`).
 
-Aplikacja obsługuje 2 role ( Admin, User )
+---
 
-Użytkownik niezalogowany ma dostęp:
+## 7. Rodzaje Zasobów i Dostęp (Role)
 
-do slidera ze zdjęciami pobieranymi z api  ( strona główna )
+Aplikacja obsługuje podział na 2 role: **Admin** i **User**. Weryfikacja dostępu odbywa się na podstawie pola **`permissions`** w JWT.
 
-Admin ma dostęp do:
+| Użytkownik | Dostępne Zasoby | Ścieżki |
+| :--- | :--- | :--- |
+| **Niezalogowany** | Slider ze zdjęciami (API) | Strona główna |
+| **User** | Slider, Aktualności, **Posty** | Strona główna, `/posts` |
+| **Admin** | Slider, Aktualności, **Posty**, **Dokumenty** | Strona główna, `/posts`, `/docs` |
 
-- slidera ze zdjęciami pobieranymi z api  ( strona główna )
-- aktualnośći ( strona główna )
-- postów ( /posts )
-- dokumentów ( /docs
+---
 
-User ma dostęp do:
+## 8. 🔑 Konfiguracja w Menedżerze Auth0
 
-- slidera ze zdjęciami pobieranymi z api  ( strona główna )
-- aktualnośći ( strona główna )
-- postów ( /posts )
-
-
-Weryfikacja odbywa sie na podstawie pola permissions wewnatrz tokena JWT 
-
-
-## 6. UStawienia w Auth0.menager
+W panelu Auth0 Manager skonfigurowano kluczowe elementy (zgodnie z załączonymi obrazami w oryginalnej instrukcji, które są niezbędne dla pełnej konfiguracji):
 
 Aby aplikacja działała wymagane było ustawienie:
 
