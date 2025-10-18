@@ -151,7 +151,6 @@ Do pliku konfiguracyjnego Frontendu dodano identyfikatory Auth0:
 - utworzenie użytkowników
 - utworzenie ról oraz zezwoleń a następnie przypisanie do użytkowników
 - ustawienie w aplikacji klienta odpowiednich URL dla callback / redirect
-- 
 - ustawienie w panelu dla aplikacji api
   
   <img width="1034" height="308" alt="image" src="https://github.com/user-attachments/assets/f947ee4e-e3aa-4d2e-a87c-b922b91c4d90" />
