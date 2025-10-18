@@ -39,19 +39,27 @@ function useApi(token: string) {
         }
     }
 
-    const getAuthData = async (url: string, headers: object = {}, queryParams: URLSearchParams) => {
-        //const token = await getToken()
-        console.log(token)
-        return await fetchWrapper(`${BASE_URL}${url}?${queryParams.toString()}`,{
+    const getAuthData = async (
+        url: string,
+        headers: object = {},
+        queryParams: URLSearchParams | null = null
+    ) => {
+        const fullUrl = queryParams ? `${BASE_URL}${url}?${queryParams.toString()}` : `${BASE_URL}${url}`;
+
+        return await fetchWrapper(fullUrl, {
             method: "GET",
             headers: { Authorization: `Bearer ${token}`, ...headers }
-        })
+        });
+    };
+
+    const getAuthPost = async () => {
+        const url = "/api/posts"
+        return await getAuthData(url,{},null)
     }
 
-    const getAuthPost = async (category: string) => {
-        const url = "/api/posts"
-        const query = new URLSearchParams({cat: category})
-        return await getAuthData(url,{},query)
+    const getAuthDocs = async () => {
+        const url = "/api/docs"
+        return await getAuthData(url,{},null)
     }
 
 
@@ -84,7 +92,8 @@ function useApi(token: string) {
     return {
         fetchNewsApi,
         getSliderPhoto,
-        getAuthPost
+        getAuthPost,
+        getAuthDocs
     }
 
 }

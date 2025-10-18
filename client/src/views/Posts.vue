@@ -1,99 +1,6 @@
-<script setup>
-import { ref, onMounted, watch } from 'vue'
-import { useApi } from '../api/api'
-import { useAuth0 } from '@auth0/auth0-vue';
-import Slider from '../components/Slider.vue'
-import { getExcerpt, formatDate } from '../utils';
-
-const { getAccessTokenSilently, isAuthenticated } = useAuth0()
-
-const images = ref([])
-const loadingSlider = ref(true)
-
-
-const postsPerPage = 3;
-const posts = ref([]);
-const currentPage = ref(1);
-const totalPages = ref(0);
-const isLoading = ref(false);
-const noMore = ref(false);
-const isForbidden = ref(true)
-const error = ref (false)
-
-onMounted(async () => {
-
-    const response = await  useApi().getSliderPhoto()
-
-    if(response.status < 300)
-    {
-       images.value = response.data
-    }
-    loadingSlider.value = false
-
-    if(isAuthenticated)
-      fetchNews()
-})
-
-
-watch(isAuthenticated, (value) => {
-   if(isAuthenticated.value)
-    fetchNews()
-})
-
-const fetchNews = async () => {
-  if (isLoading.value) return;
-  isLoading.value = true;
-  isForbidden.value = false
-  try {
-    const token = await getAccessTokenSilently({audience: "node-api"})
-    const response = await useApi(token).fetchNewsApi(postsPerPage,currentPage)
-    if (response.status < 300) {
-      if (currentPage.value === 1) {
-        totalPages.value = parseInt(response.data.totalPages) || 0;
-      }
-   
-      isForbidden.value = false
-      const data = response.data;
-      posts.value.push(...data.news);
-
-      if (currentPage.value >= totalPages.value) {
-        noMore.value = true;
-      }
-    }
-    else{
-
-      if(response.status == 401)
-      {
-          isForbidden.value = true
-      }
-      else{
-          error.value = true
-      } 
-      throw new Error(`Błąd HTTP: ${response.status}`);
-
-    }
-   
-  } catch (err) {
-    console.error('Błąd:', err);
-    isForbidden.value = true
-
-  } finally {
-    isLoading.value = false
-  }
-};
-
-const loadMore = () => {
-  currentPage.value++;
-  fetchNews();
-};
-
-
-</script>
-
 <template>
-  <Slider :images="images" :isLoading="loadingSlider"/>
-  <div class="px-4 py-8 mx-12 color-primary-light-bg">
-    <h1 class="text-3xl font-bold text-left mb-8 mx-4">Aktualności</h1>
+    <div class="px-4 py-8 mx-12 color-primary-light-bg">
+    <h1 class="text-3xl font-bold text-left mb-8 mx-4">Posts</h1>
 
     <!-- Grid z postami -->
     <div
@@ -134,7 +41,7 @@ const loadMore = () => {
 
     <!-- Sekcja skeletonów -->
     <div
-      v-if="isLoading && !isForbidden"
+      v-if="isLoading"
       id="loadingSection"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
     >
@@ -164,42 +71,49 @@ const loadMore = () => {
         </div>
       </div>
     </div>
-
-    <!-- Przyciski / komunikaty -->
-    <div class="text-center">
-      <button
-        v-if="!isLoading && !noMore && !isForbidden"
-        @click="loadMore"
-        class="btn-primary-ripple"
-      >
-        Pokaż więcej
-      </button>
-
-      <div v-if="isLoading" class="lds-ellipsis">
-        <div></div><div></div><div></div><div></div>
-      </div>
-
-      <p
-        v-if="noMore && !isForbidden"
-        class="text-gray-500 mt-4"
-      >
-        To już wszystkie aktualności.
-      </p>
-      <p
-        v-if="isForbidden && !error"
-        class="text-red-500 mt-4 text-xl"
-      >
-        You have to login to get acces to this resources.
-      </p>
-      <p
-        v-if="error"
-        class="text-red-500 mt-4 text-xl"
-      >
-        Application could not fetch news.
-      </p>
+    <div class="text-center w-full">
+        <p class="text-red-500 mt-4 text-xl" v-if="isForbidden && !error" >You have no permission to this page</p>
+        <p class="text-red-500 mt-4 text-xl" v-if="error" >Application could not fetch posts.</p>
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useAuth0 } from '@auth0/auth0-vue';
+import { useApi } from '../api/api';
+import { getExcerpt, formatDate } from '../utils';
+const isLoading = ref(true)
+const posts = ref([])
+const isForbidden = ref(false)
+const error = ref(false)
+const { getAccessTokenSilently } = useAuth0()
+
+onMounted(async () => {
+    isLoading.value = true
+    const token = await getAccessTokenSilently({aduience: "node-api"})
+    const response = await useApi(token).getAuthPost()
+    console.log("response",response)
+    if(response.status < 300)
+    {   
+        posts.value = response.data
+    }
+    else{
+        if(response.status == 401 || response.status == 403){
+          isForbidden.value = true
+        }
+        else { 
+          error.value = true 
+        }
+    }
+
+    isLoading.value = false
+    console.log("error",error.value)
+
+})
+
+</script>
+
 <style scoped>
 .skeleton-box {
   display: inline-block;

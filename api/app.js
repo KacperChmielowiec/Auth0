@@ -37,6 +37,15 @@ app.get('/api/posts', verifyToken, verifyPermission(['read:posts']), (req, res) 
 });
 
 
+// token + role permissions
+app.get('/api/docs', verifyToken, verifyPermission(['read:docs']), (req, res) => {
+  // mocked data
+  const docs = require('./mockDB.json').docs;
+  res.json({status: 200, message: 'Docs', data: docs });
+});
+
+
+
 app.use('/photos', express.static(path.join(process.cwd(), 'photos')));
 
 // free access 
@@ -46,7 +55,7 @@ app.get('/api/photos', (req, res) => {
   res.json({status: 200, message: 'Photos', data: photos });
 });
 
-
+// only token access
 app.get('/api/news', verifyToken, async (req, res) => {
   const allNews = require("./mockDB.json").news;
 
