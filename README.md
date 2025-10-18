@@ -1,4 +1,4 @@
-<img width="1034" height="308" alt="image" src="https://github.com/user-attachments/assets/fd25b78c-3210-4366-adae-838a04ba9bd4" /># Instrukcja uruchomienia aplikacji (Frontend i Backend)
+# Instrukcja uruchomienia aplikacji (Frontend i Backend)
 
 ---
 
