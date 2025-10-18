@@ -125,32 +125,47 @@ Aplikacja obsługuje podział na 2 role: **Admin** i **User**. Weryfikacja dost�
 
 ## 8. 🔑 Konfiguracja w Menedżerze Auth0
 
-W panelu Auth0 Manager skonfigurowano kluczowe elementy (zgodnie z załączonymi obrazami w oryginalnej instrukcji, które są niezbędne dla pełnej konfiguracji):
+---
 
-Aby aplikacja działała wymagane było ustawienie:
+## 1. Ustanowienie Podstawowych Elementów
 
-- utworzenie aplikacji klienta
-- utorzenie aplikacji API
-- dodanie do aplikacji klienta 
-    {
-      "domain": "dev-tah3h7wxplpcrg31.eu.auth0.com",
-      "clientId": "CSkvRyn9d7wo4C7HFqqYI5scHBivrhMn"
-    }
+Poniższe elementy musiały zostać utworzone w panelu Auth0 Manager:
+
+* ✅ **Utworzenie Aplikacji Klienta** (Client Application, dla Frontendu Vue.js).
+* ✅ **Utworzenie Aplikacji API** (API Application, dla Backendu Node.js).
+* ✅ **Definicja i Przypisanie Ról**: Utworzenie **użytkowników**, **ról** oraz **zezwoleń** (`permissions`), a następnie przypisanie ról do użytkowników.
+
+---
+
+## 2. Ustawienia Aplikacji Klienta (Frontend)
+
+### Dane Klienta w Aplikacji
+
+Do pliku konfiguracyjnego Frontendu dodano identyfikatory Auth0:
+```json
+{
+  "domain": "dev-tah3h7wxplpcrg31.eu.auth0.com",
+  "clientId": "CSkvRyn9d7wo4C7HFqqYI5scHBivrhMn"
+}
+```
 - utworzenie użytkowników
 - utworzenie ról oraz zezwoleń a następnie przypisanie do użytkowników
 - ustawienie w aplikacji klienta odpowiednich URL dla callback / redirect
-- ustawienie w panelu dla aplikacji api 
+- 
+- ustawienie w panelu dla aplikacji api
+  
   <img width="1034" height="308" alt="image" src="https://github.com/user-attachments/assets/f947ee4e-e3aa-4d2e-a87c-b922b91c4d90" />
 
-  w celu dodania permissions do tokenu
+w celu dodania permissions do tokenu
 
 - ustawienie w panelu dla aplikacji klienta  (vue.js )
 
 <img width="1088" height="344" alt="image" src="https://github.com/user-attachments/assets/35ccbd31-dc88-46cc-b35b-efa1bd4a9928" />
 
-Aby nie wylogoło nas po odświeżeniu strony
+Aby nie wylogowywało nas po odświeżeniu strony
 
 - ustawienie w panelu dla aplikacji klienta
+  
 <img width="1011" height="258" alt="image" src="https://github.com/user-attachments/assets/c39a8aac-d87d-4265-b545-bebb731f551c" />
 
 w celu zapewnienia weryfikacji przez wymiane kodu tymczasowego na token
