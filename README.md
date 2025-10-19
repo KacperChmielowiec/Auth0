@@ -123,7 +123,7 @@ Aplikacja obsługuje podział na 2 role: **Admin** i **User**. Weryfikacja dost�
 
 ---
 
-## 8. 🔑 Konfiguracja w Menedżerze Auth0
+## 8. 🔑 Konfiguracja w Menedżerze Auth0 ( To już zostało ustawione )
 
 ---
 
