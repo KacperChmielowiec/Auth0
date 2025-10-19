@@ -7,7 +7,7 @@ const formatDate = (dateStr: string) => {
 };
 
 const getExcerpt = (post: { excerpt: string }) => {
-    const raw = post.excerpt?.replace(/<[^>]+>/g, '') || 'Brak opisu...';
+    const raw = post.excerpt?.replace(/<[^>]+>/g, '') || 'No desc...';
     return raw.substring(0, 150) + '...';
 };
 

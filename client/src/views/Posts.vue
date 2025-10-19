@@ -20,7 +20,7 @@
           />
         </div>
         <div v-else class="w-full h-48 bg-gray-200 rounded-t-lg flex items-center justify-center text-gray-400">
-          Brak obrazka
+          No image
         </div>
 
         <div class="p-6">
@@ -33,7 +33,7 @@
             :href="post.link"
             class="inline-block text-blue-600 font-medium hover:text-blue-800 transition duration-200"
           >
-            Czytaj więcej →
+            Read more →
           </a>
         </div>
       </div>
@@ -72,7 +72,7 @@
       </div>
     </div>
     <div class="text-center w-full">
-        <p class="text-red-500 mt-4 text-xl" v-if="isForbidden && !error" >You have no permission to this page</p>
+        <p class="text-red-500 mt-4 text-xl" v-if="isForbidden && !error" >You have no permissions to this page</p>
         <p class="text-red-500 mt-4 text-xl" v-if="error" >Application could not fetch posts.</p>
     </div>
   </div>
@@ -93,7 +93,6 @@ onMounted(async () => {
     isLoading.value = true
     const token = await getAccessTokenSilently({aduience: "node-api"})
     const response = await useApi(token).getAuthPost()
-    console.log("response",response)
     if(response.status < 300)
     {   
         posts.value = response.data
@@ -108,7 +107,6 @@ onMounted(async () => {
     }
 
     isLoading.value = false
-    console.log("error",error.value)
 
 })
 

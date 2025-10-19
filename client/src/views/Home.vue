@@ -2,8 +2,8 @@
 import { ref, onMounted, watch } from 'vue'
 import { useApi } from '../api/api'
 import { useAuth0 } from '@auth0/auth0-vue';
-import Slider from '../components/Slider.vue'
 import { getExcerpt, formatDate } from '../utils';
+import Slider from '../components/Slider.vue'
 
 const { getAccessTokenSilently, isAuthenticated } = useAuth0()
 
@@ -41,13 +41,18 @@ watch(isAuthenticated, (value) => {
 })
 
 const fetchNews = async () => {
+
   if (isLoading.value) return;
   isLoading.value = true;
   isForbidden.value = false
+
   try {
+
     const token = await getAccessTokenSilently({audience: "node-api"})
     const response = await useApi(token).fetchNewsApi(postsPerPage,currentPage)
+
     if (response.status < 300) {
+
       if (currentPage.value === 1) {
         totalPages.value = parseInt(response.data.totalPages) || 0;
       }
@@ -59,6 +64,7 @@ const fetchNews = async () => {
       if (currentPage.value >= totalPages.value) {
         noMore.value = true;
       }
+
     }
     else{
 
@@ -69,6 +75,7 @@ const fetchNews = async () => {
       else{
           error.value = true
       } 
+
       throw new Error(`Błąd HTTP: ${response.status}`);
 
     }
@@ -93,7 +100,7 @@ const loadMore = () => {
 <template>
   <Slider :images="images" :isLoading="loadingSlider"/>
   <div class="px-4 py-8 mx-12 color-primary-light-bg">
-    <h1 class="text-3xl font-bold text-left mb-8 mx-4">Aktualności</h1>
+    <h1 class="text-3xl font-bold text-left mb-8 mx-4">News</h1>
 
     <!-- Grid z postami -->
     <div
@@ -113,7 +120,7 @@ const loadMore = () => {
           />
         </div>
         <div v-else class="w-full h-48 bg-gray-200 rounded-t-lg flex items-center justify-center text-gray-400">
-          Brak obrazka
+          No image
         </div>
 
         <div class="p-6">
@@ -126,7 +133,7 @@ const loadMore = () => {
             :href="post.link"
             class="inline-block text-blue-600 font-medium hover:text-blue-800 transition duration-200"
           >
-            Czytaj więcej →
+            Read more →
           </a>
         </div>
       </div>
@@ -172,7 +179,7 @@ const loadMore = () => {
         @click="loadMore"
         class="btn-primary-ripple"
       >
-        Pokaż więcej
+        Show more
       </button>
 
       <div v-if="isLoading" class="lds-ellipsis">
@@ -183,13 +190,13 @@ const loadMore = () => {
         v-if="noMore && !isForbidden"
         class="text-gray-500 mt-4"
       >
-        To już wszystkie aktualności.
+        That's all the news.
       </p>
       <p
         v-if="isForbidden && !error"
         class="text-red-500 mt-4 text-xl"
       >
-        You have to login to get acces to this resources.
+        To access these resources, you must log in.
       </p>
       <p
         v-if="error"

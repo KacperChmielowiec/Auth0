@@ -2,16 +2,16 @@
   <div  class="flex w-full justify-center items-start min-h-screen bg-gray-100 p-6">
     <div v-if="!isForbidden && !error" class="max-w-5xl bg-white rounded-2xl shadow-lg p-6">
       <h1 class="text-2xl font-semibold text-center mb-6">
-        Lista dokumentów PDF
+        List of PDF documents
       </h1>
 
       <table class="w-full border-collapse">
         <thead>
           <tr class="bg-gray-200 text-gray-700">
-            <th class="py-3 px-4 text-left rounded-tl-lg">Nazwa dokumentu</th>
-            <th class="py-3 px-4 text-left">Autor</th>
-            <th class="py-3 px-4 text-left">Data utworzenia</th>
-            <th class="py-3 px-4 text-center rounded-tr-lg">Pobierz</th>
+            <th class="py-3 px-4 text-left rounded-tl-lg">Name of document</th>
+            <th class="py-3 px-4 text-left">Authorr</th>
+            <th class="py-3 px-4 text-left">Created</th>
+            <th class="py-3 px-4 text-center rounded-tr-lg">Download</th>
           </tr>
         </thead>
         <tbody>
@@ -42,7 +42,7 @@
       </table>
     </div>
     <div v-else class="text-center w-full">
-            <p class="text-red-500 mt-4 text-xl" v-if="isForbidden && !error" >You have no permission to this page</p>
+            <p class="text-red-500 mt-4 text-xl" v-if="isForbidden && !error" >You have no permissions to this page</p>
             <p class="text-red-500 mt-4 text-xl" v-if="error" >Application could not fetch posts.</p>
     </div>
   </div>
